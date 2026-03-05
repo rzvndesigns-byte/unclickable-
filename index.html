@@ -276,23 +276,9 @@ const teasingMessages = [
 ];
 
 // No button avoidance
-noBtn.addEventListener("mouseover", ()=>{
-  if(!clickable && avoidCount < 3){
-    avoidCount++;
-    message.innerText = teasingMessages[avoidCount-1] || "";
-    
-    if(avoidCount >= 3){
-      clickable = true;
-      noBtn.classList.add('clickable');
-      message.innerText = "Fine, you can click No now... if you dare! 😏";
-    } else {
-      moveNoButton();
-    }
-  }
-});
+function handleNoAttempt(e){
+  if(e.type === "touchstart") e.preventDefault();
 
-noBtn.addEventListener("touchstart", (e)=>{
-  e.preventDefault();
   if(!clickable && avoidCount < 3){
     avoidCount++;
     message.innerText = teasingMessages[avoidCount-1] || "";
@@ -301,11 +287,15 @@ noBtn.addEventListener("touchstart", (e)=>{
       clickable = true;
       noBtn.classList.add('clickable');
       message.innerText = "Fine, you can click No now... if you dare! 😏";
+      memePopup.classList.add('show');
     } else {
       moveNoButton();
     }
   }
-});
+}
+
+noBtn.addEventListener("mouseover", handleNoAttempt);
+noBtn.addEventListener("touchstart", handleNoAttempt);
 
 function moveNoButton(){
   const container = document.querySelector('.button-container');
@@ -334,9 +324,7 @@ function moveNoButton(){
   noBtn.style.top = newY + "px";
 }
 
-noBtn.addEventListener("click", (e)=>{
-  e.stopPropagation();
-  
+noBtn.addEventListener("click", ()=>{
   if(clickable){
     memePopup.classList.add('show');
   }
@@ -388,5 +376,3 @@ setInterval(()=>{
 
 </body>
 </html>
-
-
