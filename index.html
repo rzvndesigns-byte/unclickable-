@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Be My Valentine? 💘</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+  overflow:hidden;
+  font-family:'Comic Sans MS', cursive, sans-serif;
+  background:linear-gradient(135deg,#ff6b9d,#ffc2d4,#ff8fab);
+  background-size:400% 400%;
+  animation:gradientShift 8s ease infinite;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+  flex-direction:column;
+  text-align:center;
+  position:relative;
+}
+
+@keyframes gradientShift{
+  0%{background-position:0% 50%;}
+  50%{background-position:100% 50%;}
+  100%{background-position:0% 50%;}
+}
+
+h1{
+  color:white;
+  font-size:2.8rem;
+  text-shadow:3px 3px 15px rgba(255,77,109,0.8);
+  margin-bottom:30px;
+  animation:bounce 2s ease-in-out infinite;
+}
+
+@keyframes bounce{
+  0%,100%{transform:translateY(0);}
+  50%{transform:translateY(-10px);}
+}
+
+.button-container{
+  display:flex;
+  gap:20px;
+  position:relative;
+  min-height:80px;
+  width:100%;
+  max-width:500px;
+  align-items:center;
+  justify-content:center;
+}
+
+button{
+  padding:18px 40px;
+  font-size:20px;
+  font-weight:bold;
+  border:none;
+  border-radius:50px;
+  cursor:pointer;
+  transition:all 0.3s;
+  box-shadow:0 8px 20px rgba(0,0,0,0.2);
+  font-family:'Comic Sans MS', cursive;
+}
+
+#yes{
+  background:#ff4d6d;
+  color:white;
+  animation:pulse 1.5s infinite;
+}
+
+#yes:hover{
+  transform:scale(1.15);
+  box-shadow:0 12px 30px rgba(255,77,109,0.5);
+}
+
+@keyframes pulse{
+  0%,100%{transform:scale(1);}
+  50%{transform:scale(1.08);}
+}
+
+#no{
+  background:white;
+  color:#ff4d6d;
+  transition:all 0.3s;
+}
+
+#no:hover{
+  transform:scale(1.05);
+}
+
+#no.clickable{
+  background:#ffb3c6;
+  cursor:pointer;
+}
+
+#message{
+  margin-top:30px;
+  color:white;
+  font-size:1.4rem;
+  font-weight:bold;
+  text-shadow:2px 2px 8px rgba(0,0,0,0.3);
+  min-height:40px;
+  animation:fadeIn 0.5s;
+}
+
+@keyframes fadeIn{
+  from{opacity:0;transform:translateY(-10px);}
+  to{opacity:1;transform:translateY(0);}
+}
+
+.heart{
+  position:absolute;
+  font-size:25px;
+  animation:float 5s linear infinite;
+  pointer-events:none;
+}
+
+@keyframes float{
+  from{transform:translateY(100vh) rotate(0deg);opacity:1;}
+  to{transform:translateY(-10vh) rotate(360deg);opacity:0;}
+}
+
+#memePopup{
+  display:none;
+  position:fixed;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%) scale(0);
+  background:white;
+  padding:30px;
+  border-radius:25px;
+  box-shadow:0 15px 50px rgba(0,0,0,0.4);
+  flex-direction:column;
+  align-items:center;
+  z-index:100;
+  max-width:90%;
+  transition:transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+#memePopup.show{
+  display:flex;
+  transform:translate(-50%,-50%) scale(1);
+}
+
+#memePopup img{
+  width:100%;
+  max-width:350px;
+  border-radius:15px;
+  margin-bottom:20px;
+  box-shadow:0 5px 20px rgba(0,0,0,0.2);
+}
+
+#memePopup h3{
+  color:#ff4d6d;
+  font-size:2rem;
+  margin-bottom:20px;
+}
+
+#memePopup button{
+  background:#ff4d6d;
+  color:white;
+  padding:12px 30px;
+  font-size:16px;
+}
+
+#surprise{
+  display:none;
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:linear-gradient(135deg,#ff1744,#ff6b9d,#ffc2d4);
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  z-index:99;
+  animation:fadeIn 1s;
+}
+
+#surprise h2{
+  color:white;
+  font-size:3rem;
+  text-shadow:3px 3px 20px rgba(0,0,0,0.3);
+  margin-bottom:30px;
+  animation:heartbeat 1.5s infinite;
+}
+
+@keyframes heartbeat{
+  0%,100%{transform:scale(1);}
+  10%{transform:scale(1.1);}
+  20%{transform:scale(1);}
+  30%{transform:scale(1.1);}
+  40%{transform:scale(1);}
+}
+
+#surprise p{
+  color:white;
+  font-size:1.5rem;
+  max-width:600px;
+  line-height:1.8;
+  text-shadow:2px 2px 10px rgba(0,0,0,0.3);
+  margin-bottom:30px;
+  padding:0 20px;
+}
+
+.big-heart{
+  font-size:120px;
+  animation:spin 3s linear infinite;
+  filter:drop-shadow(0 10px 30px rgba(255,255,255,0.5));
+}
+
+@keyframes spin{
+  from{transform:rotate(0deg);}
+  to{transform:rotate(360deg);}
+}
+
+@media(max-width:600px){
+  h1{font-size:1.8rem;padding:0 10px;}
+  button{padding:14px 28px;font-size:16px;}
+  #message{font-size:1.1rem;padding:0 15px;}
+  #surprise h2{font-size:2rem;padding:0 15px;}
+  #surprise p{font-size:1.1rem;padding:0 20px;}
+  .big-heart{font-size:70px;}
+  .button-container{max-width:90%;}
+}
+
+</style>
+</head>
+
+<body>
+
+<h1>Will You Be My Valentine? 💘</h1>
+
+<div class="button-container">
+  <button id="yes">Yes! ❤️</button>
+  <button id="no">No 💔</button>
+</div>
+
+<div id="message"></div>
+
+<div id="memePopup">
+  <img src="meme.webp" alt="Think Again Meme">
+  <h3>Think Again! 😏</h3>
+  <button onclick="closeMeme()">Okay okay... 😭</button>
+</div>
+
+<div id="surprise">
+  <h2>Yay! You Said Yes! 🎉</h2>
+  <p>
+    I knew you'd come around! 💕<br>
+    Get ready for the most chaotic, sweet, and unforgettable Valentine's Day ever!<br>
+    You just made me the happiest person alive! 🥰
+  </p>
+  <div class="big-heart">💖</div>
+</div>
+
+<script>
+
+const yesBtn = document.getElementById("yes");
+const noBtn = document.getElementById("no");
+const message = document.getElementById("message");
+const memePopup = document.getElementById("memePopup");
+const surprise = document.getElementById("surprise");
+
+let attempts = 0;
+let avoidCount = 0;
+let clickable = false;
+
+const teasingMessages = [
+  "Nice try! But I'm too quick! 😏",
+  "Almost got me there! 🤨",
+  "Okay, you can click me now... 😌"
+];
+
+// No button avoidance
+noBtn.addEventListener("mouseover", ()=>{
+  if(!clickable && avoidCount < 3){
+    avoidCount++;
+    message.innerText = teasingMessages[avoidCount-1] || "";
+    
+    if(avoidCount >= 3){
+      clickable = true;
+      noBtn.classList.add('clickable');
+      message.innerText = "Fine, you can click No now... if you dare! 😏";
+    } else {
+      moveNoButton();
+    }
+  }
+});
+
+noBtn.addEventListener("touchstart", (e)=>{
+  e.preventDefault();
+  if(!clickable && avoidCount < 3){
+    avoidCount++;
+    message.innerText = teasingMessages[avoidCount-1] || "";
+    
+    if(avoidCount >= 3){
+      clickable = true;
+      noBtn.classList.add('clickable');
+      message.innerText = "Fine, you can click No now... if you dare! 😏";
+    } else {
+      moveNoButton();
+    }
+  }
+});
+
+function moveNoButton(){
+  const container = document.querySelector('.button-container');
+  const containerRect = container.getBoundingClientRect();
+  const btnRect = noBtn.getBoundingClientRect();
+  
+  // Move within a small radius around the container (stays near, visible)
+  const moveRange = 120; // Small movement range
+  const centerX = containerRect.left + containerRect.width / 2;
+  const centerY = containerRect.top + containerRect.height / 2;
+  
+  // Random angle and distance
+  const angle = Math.random() * Math.PI * 2;
+  const distance = 80 + Math.random() * 40; // 80-120px away
+  
+  let newX = centerX + Math.cos(angle) * distance - btnRect.width / 2;
+  let newY = centerY + Math.sin(angle) * distance - btnRect.height / 2;
+  
+  // Keep within viewport with padding
+  const padding = 20;
+  newX = Math.max(padding, Math.min(newX, window.innerWidth - btnRect.width - padding));
+  newY = Math.max(padding, Math.min(newY, window.innerHeight - btnRect.height - padding));
+  
+  noBtn.style.position = 'fixed';
+  noBtn.style.left = newX + "px";
+  noBtn.style.top = newY + "px";
+}
+
+noBtn.addEventListener("click", (e)=>{
+  e.stopPropagation();
+  
+  if(clickable){
+    memePopup.classList.add('show');
+  }
+});
+
+function closeMeme(){
+  memePopup.classList.remove('show');
+  clickable = false;
+  avoidCount = 0;
+  noBtn.classList.remove('clickable');
+  noBtn.innerText = "No 💔";
+  noBtn.style.position = 'relative';
+  noBtn.style.left = 'auto';
+  noBtn.style.top = 'auto';
+  message.innerText = "Let's try that again! 😄";
+}
+
+// Yes button
+yesBtn.addEventListener("click", ()=>{
+  surprise.style.display = "flex";
+  createHearts();
+});
+
+function createHearts(){
+  setInterval(()=>{
+    const heart = document.createElement("div");
+    heart.classList.add("heart");
+    heart.innerHTML = ['💖','💕','💗','💓','💝'][Math.floor(Math.random()*5)];
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.fontSize = Math.random() * 20 + 20 + "px";
+    heart.style.animationDuration = (Math.random() * 3 + 3) + "s";
+    document.body.appendChild(heart);
+    setTimeout(()=> heart.remove(), 6000);
+  }, 300);
+}
+
+// Initial floating hearts
+setInterval(()=>{
+  const heart = document.createElement("div");
+  heart.classList.add("heart");
+  heart.innerHTML = '💕';
+  heart.style.left = Math.random() * 100 + "vw";
+  heart.style.animationDuration = (Math.random() * 3 + 4) + "s";
+  document.body.appendChild(heart);
+  setTimeout(()=> heart.remove(), 7000);
+}, 800);
+
+</script>
+
+</body>
+</html>
+
+
